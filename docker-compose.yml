@@ -36,7 +36,7 @@ services:
     environment:
       - PROFILE=prod
     depends_on:
-      - crowdfunding_api
+      - crowdfunding
             
   crowdfunding-panel:
     container_name: crowdfunding_admin
