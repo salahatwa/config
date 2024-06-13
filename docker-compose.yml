@@ -31,7 +31,7 @@ services:
     depends_on:
       - psql-db
     volumes:
-      - /home/salahsayedatwa/apps/backend
+      - /home/salahsayedatwa/apps/backend:/tmp/
 
   gatway:
     container_name: gatway_api
