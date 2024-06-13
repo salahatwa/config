@@ -20,12 +20,14 @@ services:
       - '8082:8082'
     environment:
       - PROFILE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/crowdfund
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/crowdfund
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - WORK_DIR=/home/salahsayedatwa/apps/backend/
       - DOMAIN=http://4.227.163.50:8082
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - psql-db
 
@@ -38,7 +40,7 @@ services:
     environment:
       - PROFILE=prod
     depends_on:
-      - crowdfunding_api
+      - crowdfunding
             
   crowdfunding-panel:
     container_name: crowdfunding_admin
