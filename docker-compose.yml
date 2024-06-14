@@ -24,7 +24,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - WORK_DIR=/home/salahsayedatwa/apps/backend/
+      - WORK_DIR=home/salahsayedatwa/apps/backend
       - DOMAIN=http://4.227.163.50:8082
     extra_hosts:
       - "host.docker.internal:host-gateway"
