@@ -32,17 +32,6 @@ services:
       - psql-db
     volumes:
       - /home/salahsayedatwa/apps/backend:/home/salahsayedatwa/apps/backend
-
-  gatway:
-    container_name: gatway_api
-    image: atwa4/gatway-api:latest
-    restart: always
-    ports:
-      - '8083:8083'
-    environment:
-      - PROFILE=prod
-    depends_on:
-      - crowdfunding
             
   crowdfunding-panel:
     container_name: crowdfunding_admin
