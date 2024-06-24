@@ -25,13 +25,13 @@ services:
       - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - WORK_DIR=home/salahsayedatwa/apps/backend
-      - DOMAIN=http://4.227.163.50:8082
+      - DOMAIN=http://20.106.171.75:8082
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - psql-db
     volumes:
-      - /home/salahsayedatwa/apps/backend:/home/salahsayedatwa/apps/backend
+      - /work:/work
             
   crowdfunding-panel:
     container_name: crowdfunding_admin
