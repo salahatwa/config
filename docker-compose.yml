@@ -32,6 +32,8 @@ services:
       - psql-db
     volumes:
       - /home/kayany_website/itways:/home/kayany_website/itways
+    networks:
+      - webnet
             
   crowdfunding-panel:
     container_name: crowdfunding_admin
@@ -41,9 +43,10 @@ services:
       - '8085:8085'
     environment:
       - PROFILE=test
-  
     depends_on:
       - crowdfunding
+    networks:
+      - webnet
 
   nginx:
     image: nginx:latest
