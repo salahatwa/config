@@ -2,6 +2,8 @@ echo "Deployment has been started";
 
 cd /home/kayany_website/itways ;
 
+sudo docker network create webnet;
+
 rm -rf docker-compose.yml;
 
 rm -rf nginx.conf;
