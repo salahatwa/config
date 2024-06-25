@@ -41,5 +41,20 @@ services:
       - '8085:8085'
     environment:
       - PROFILE=test
+  
     depends_on:
       - crowdfunding
+
+  nginx:
+    image: nginx:latest
+    volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - '80:80'
+    environment:
+      - PROFILE=test
+    networks:
+      - webnet
+    depends_on:
+      - crowdfunding
+      - crowdfunding-panel
