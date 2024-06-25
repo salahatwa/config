@@ -2,7 +2,13 @@ echo "Deployment has been started";
 
 cd /home/kayany_website/itways ;
 
-rm -rf docker-compose.yml &&curl -O https://raw.githubusercontent.com/salahatwa/config/main/docker-compose.yml ;
+rm -rf docker-compose.yml;
+
+rm -rf nginx.conf;
+
+curl -O https://raw.githubusercontent.com/salahatwa/config/main/docker-compose.yml;
+
+curl -O https://raw.githubusercontent.com/salahatwa/config/main/nginx.conf;
 
 sudo docker compose down ;
 
