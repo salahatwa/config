@@ -18,6 +18,6 @@ sudo docker rmi atwa4/crowdfunding-api:latest &&sudo docker rmi atwa4/crowdfundi
 
 sudo docker compose pull&&sudo docker compose build ;
 
-sudo docker compose up -d;
+sudo docker compose up;
 
 echo "Deployment has been done";
