@@ -26,6 +26,10 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - WORK_DIR=home/kayany_website/itways
       - DOMAIN=http://35.197.20.122:8082
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=salahsayedatwa@gmail.com
+      - SMTP_PASSWORD=ovviocmfvepvoesq
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
