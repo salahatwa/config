@@ -4,13 +4,13 @@ cd /home/kayany_website/itways ;
 
 sudo docker network create webnet;
 
-rm -rf docker-compose.yml;
+sudo rm -rf docker-compose.yml;
 
-rm -rf nginx.conf;
+sudo rm -rf nginx.conf;
 
-curl -O https://raw.githubusercontent.com/salahatwa/config/main/docker-compose.yml;
+sudo curl -O https://raw.githubusercontent.com/salahatwa/config/main/docker-compose.yml;
 
-curl -O https://raw.githubusercontent.com/salahatwa/config/main/nginx.conf;
+sudo curl -O https://raw.githubusercontent.com/salahatwa/config/main/nginx.conf;
 
 sudo docker compose down ;
 
