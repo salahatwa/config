@@ -2,6 +2,8 @@ echo "Deployment has been started";
 
 cd /home/kayany_website/itways ;
 
+sudo chmod 777 /var/run/docker.sock
+
 sudo docker network create webnet;
 
 sudo rm -rf docker-compose.yml;
