@@ -52,7 +52,7 @@ services:
     networks:
       - webnet
 
-   crowdown-panel:
+  crowdown-panel:
     container_name: crowdown
     image: atwa4/crowdown-panel:latest
     restart: always
