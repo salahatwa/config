@@ -67,7 +67,6 @@ services:
     depends_on:
       - crowdfunding
       - crowdfunding-panel
-      - crowdown-panel
 
 networks:
   webnet:
