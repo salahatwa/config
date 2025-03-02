@@ -52,8 +52,6 @@ services:
     networks:
       - webnet
 
- 
-
   nginx:
     image: nginx:latest
     volumes: 
@@ -67,6 +65,5 @@ services:
     depends_on:
       - crowdfunding
       - crowdfunding-panel
-
 networks:
   webnet:
