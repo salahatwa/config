@@ -57,7 +57,7 @@ services:
     image: atwa4/crowdown-panel:latest
     restart: always
     ports:
-      - '8084:8084'
+      - '8083:8083'
     environment:
       - PROFILE=test
     depends_on:
