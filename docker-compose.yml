@@ -52,18 +52,7 @@ services:
     networks:
       - webnet
 
-  crowdown-panel:
-    container_name: crowdown-admin
-    image: atwa4/crowdown-panel:latest
-    restart: always
-    ports:
-      - '8083:8083'
-    environment:
-      - PROFILE=test
-    depends_on:
-      - crowdfunding
-    networks:
-      - webnet
+ 
 
   nginx:
     image: nginx:latest
