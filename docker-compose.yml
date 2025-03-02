@@ -53,7 +53,7 @@ services:
       - webnet
 
   crowdown-panel:
-    container_name: crowdown-panel
+    container_name: crowdown-admin
     image: atwa4/crowdown-panel:latest
     restart: always
     ports:
