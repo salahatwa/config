@@ -1,17 +1,6 @@
 version: "3.8"
 
 services:
-  psql-db:
-    image: postgres
-    container_name: psql-db
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=@_123456789000Sa
-      - POSTGRES_DB=crowdfund
-    ports:
-      - '5433:5432'
-
   crowdfunding:
     container_name: crowdfunding_api
     image: atwa4/crowdfunding-api:latest
@@ -20,20 +9,16 @@ services:
       - '8082:8082'
     environment:
       - PROFILE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/crowdfund
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.25.149.112:5432/crowdfund
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - WORK_DIR=home/portal/itways
-      - DOMAIN=http://172.25.149.112:8082
+      - DOMAIN=http://172.25.151.88:8082
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USERNAME=salahsayedatwa@gmail.com
       - SMTP_PASSWORD=n/a
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - psql-db
     volumes:
       - /home/portal/itways:/home/portal/itways
     networks:
