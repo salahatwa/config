@@ -20,22 +20,22 @@ services:
       - '8082:8082'
     environment:
       - PROFILE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/products
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/crowdfund
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - WORK_DIR=home/kayany_website/itways
-      - DOMAIN=http://35.197.20.122:8082
+      - WORK_DIR=home/portal/itways
+      - DOMAIN=http://172.25.149.112:8082
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USERNAME=salahsayedatwa@gmail.com
-      - SMTP_PASSWORD=ovviocmfvepvoesq
+      - SMTP_PASSWORD=n/a
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - psql-db
     volumes:
-      - /home/kayany_website/itways:/home/kayany_website/itways
+      - /home/portal/itways:/home/portal/itways
     networks:
       - webnet
             
@@ -46,24 +46,12 @@ services:
     ports:
       - '8085:8085'
     environment:
-      - PROFILE=test
+      - PROFILE=prod
     depends_on:
       - crowdfunding
     networks:
       - webnet
 
-  crowdown-panel:
-    container_name: crowdown_admin
-    image: atwa4/crowdown-panel:latest
-    restart: always
-    ports:
-      - '8084:8084'
-    environment:
-      - PROFILE=test
-    depends_on:
-      - crowdfunding
-    networks:
-      - webnet
       
   nginx:
     image: nginx:latest
@@ -78,6 +66,5 @@ services:
     depends_on:
       - crowdfunding
       - crowdfunding-panel
-      - crowdown-panel
 networks:
   webnet:
