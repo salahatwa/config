@@ -20,7 +20,7 @@ sudo docker rmi atwa4/crowdfunding-api:latest && sudo docker rmi atwa4/crowdfund
 
 sudo docker compose pull && sudo docker compose build ;
 
-sudo docker compose up -d;
+sudo docker compose up;
 
 echo "Waiting for Ollama container to be ready...";
 sleep 20  # wait 20 seconds for Ollama to start (adjust as needed)
