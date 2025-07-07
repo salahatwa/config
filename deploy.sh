@@ -20,12 +20,12 @@ sudo docker rmi atwa4/crowdfunding-api:latest && sudo docker rmi atwa4/crowdfund
 
 sudo docker compose pull && sudo docker compose build ;
 
-sudo docker compose up;
+sudo docker compose up -d;
 
 echo "Waiting for Ollama container to be ready...";
 sleep 20  # wait 20 seconds for Ollama to start (adjust as needed)
 
-echo "Pulling mistral model in Ollama...";
+echo "Pulling phi model in Ollama...";
 sudo docker exec ollama ollama pull phi; #mistral
 
 echo "Deployment has been done success :)";
