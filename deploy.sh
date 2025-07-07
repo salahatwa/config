@@ -26,6 +26,6 @@ echo "Waiting for Ollama container to be ready...";
 sleep 20  # wait 20 seconds for Ollama to start (adjust as needed)
 
 echo "Pulling mistral model in Ollama...";
-sudo docker exec ollama ollama pull mistral;
+sudo docker exec ollama ollama pull tinyllama; #mistral
 
 echo "Deployment has been done success :)";
