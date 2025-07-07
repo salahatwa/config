@@ -88,8 +88,11 @@ services:
     volumes:
       - ollama:/root/.ollama
     restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
     networks:
       - webnet
+
 
 volumes:
   ollama:
