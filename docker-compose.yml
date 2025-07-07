@@ -38,7 +38,7 @@ services:
       - /home/kayany_website/itways:/home/kayany_website/itways
     networks:
       - webnet
-            
+
   crowdfunding-panel:
     container_name: crowdfunding_admin
     image: atwa4/crowdfunding-panel:latest
@@ -64,7 +64,7 @@ services:
       - crowdfunding
     networks:
       - webnet
-      
+
   nginx:
     image: nginx:latest
     volumes: 
@@ -79,5 +79,20 @@ services:
       - crowdfunding
       - crowdfunding-panel
       - crowdown-panel
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - webnet
+
+volumes:
+  ollama:
+
 networks:
   webnet:
