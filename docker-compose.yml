@@ -90,6 +90,7 @@ services:
     restart: unless-stopped
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_ORIGINS=*
     networks:
       - webnet
 
