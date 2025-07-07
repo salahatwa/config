@@ -14,13 +14,13 @@ curl -O https://raw.githubusercontent.com/salahatwa/config/main/docker-compose.y
 
 curl -O https://raw.githubusercontent.com/salahatwa/config/main/nginx.conf;
 
-sudo docker compose down -d;
+sudo docker compose down;
 
 sudo docker rmi atwa4/crowdfunding-api:latest && sudo docker rmi atwa4/crowdfunding-panel:latest && sudo docker rmi atwa4/crowdown-panel:latest && sudo docker rmi nginx:latest ;
 
 sudo docker compose pull && sudo docker compose build ;
 
-sudo docker compose up;
+sudo docker compose up -d;
 
 echo "Waiting for Ollama container to be ready...";
 sleep 20  # wait 20 seconds for Ollama to start (adjust as needed)
