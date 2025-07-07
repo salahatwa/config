@@ -81,6 +81,7 @@ services:
       - crowdown-panel
 
   ollama:
+    mem_limit: 6g
     image: ollama/ollama
     container_name: ollama
     ports:
