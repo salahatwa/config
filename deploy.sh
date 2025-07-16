@@ -20,6 +20,6 @@ sudo docker rmi atwa4/event-core-api:latest && sudo docker rmi nginx:latest ;
 
 sudo docker compose pull && sudo docker compose build ;
 
-sudo docker compose up -d;
+sudo docker compose up ;
 
 echo "Deployment has been done success :)";
