@@ -1,6 +1,6 @@
 echo "Deployment has been started";
 
-cd /home/kayany_website/itways/event-core ;
+cd /home/kayany_website/itways/event-core;
 
 sudo chmod 777 /var/run/docker.sock;
 
