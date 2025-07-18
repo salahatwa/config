@@ -6,9 +6,9 @@ services:
     container_name: psql-db
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=@_123456789000Sa
-      - POSTGRES_DB=products
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: @_123456789000Sa
+      POSTGRES_DB: products
     ports:
       - "5433:5432"
     networks:
@@ -21,18 +21,18 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - PROFILE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/products
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - WORK_DIR=home/kayany_website/itways
-      - DOMAIN=http://35.197.20.122:8082
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USERNAME=salahsayedatwa@gmail.com
-      - SMTP_PASSWORD=ovviocmfvepvoesq
+      PROFILE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://psql-db:5432/products
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: @_123456789000Sa
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      WORK_DIR: home/kayany_website/itways
+      DOMAIN: http://35.197.20.122:8082
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USERNAME: salahsayedatwa@gmail.com
+      SMTP_PASSWORD: ovviocmfvepvoesq
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -46,7 +46,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
-    volumes: 
+    volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
@@ -54,7 +54,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - PROFILE=test
+      PROFILE: test
     depends_on:
       - eventcore
     networks:
@@ -67,13 +67,13 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     entrypoint: ""
-    command: > 
-      certonly --webroot 
-      --webroot-path=/var/www/certbot 
-      --email salahsayedatwa@gmail.com 
-      --agree-tos 
-      --no-eff-email 
-      -d profily.site 
+    command: >
+      certonly --webroot
+      --webroot-path=/var/www/certbot
+      --email salahsayedatwa@gmail.com
+      --agree-tos
+      --no-eff-email
+      -d profily.site
       -d www.profily.site
     networks:
       - webnet
