@@ -22,13 +22,13 @@ services:
       - '8082:8082'
     environment:
       PROFILE: prod
-      SPRING_DATASOURCE_URL: jdbc:postgresql://psql-db:5432/products
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://psql-db:5432/products"
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: "@_123456789000Sa"
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
       WORK_DIR: home/kayany_website/itways
-      DOMAIN: http://35.197.20.122:8082
+      DOMAIN: "http://35.197.20.122:8082"
       SMTP_HOST: smtp.gmail.com
       SMTP_PORT: 587
       SMTP_USERNAME: salahsayedatwa@gmail.com
