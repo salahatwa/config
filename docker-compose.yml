@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: @_123456789000Sa
       POSTGRES_DB: products
     ports:
-      - "5433:5432"
+      - '5433:5432'
     networks:
       - webnet
 
@@ -19,7 +19,7 @@ services:
     container_name: event_core_api
     restart: always
     ports:
-      - "8082:8082"
+      - '8082:8082'
     environment:
       PROFILE: prod
       SPRING_DATASOURCE_URL: jdbc:postgresql://psql-db:5432/products
@@ -51,8 +51,8 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     environment:
       PROFILE: test
     depends_on:
@@ -82,7 +82,7 @@ services:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
     ports:
-      - "2181:2181"
+      - '2181:2181'
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
@@ -92,8 +92,8 @@ services:
     image: confluentinc/cp-kafka:7.3.0
     container_name: kafka
     ports:
-      - "9092:9092"
-      - "29092:29092"
+      - '9092:9092'
+      - '29092:29092'
     depends_on:
       - zookeeper
     environment:
