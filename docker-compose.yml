@@ -67,13 +67,7 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     entrypoint: ""
-    command: > 
-      certonly --webroot 
-      --webroot-path=/var/www/certbot 
-      --email salahsayedatwa@gmail.com 
-      --agree-tos 
-      --no-eff-email 
-      -d profily.site -d www.profily.site
+    command: certonly --webroot --webroot-path=/var/www/certbot --email salahsayedatwa@gmail.com --agree-tos --no-eff-email -d profily.site -d www.profily.site
     networks:
       - webnet
 
