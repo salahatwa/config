@@ -10,16 +10,16 @@ services:
       - POSTGRES_PASSWORD=@_123456789000Sa
       - POSTGRES_DB=products
     ports:
-      - '5433:5432'
+      - "5433:5432"
     networks:
       - webnet
 
   eventcore:
-    container_name: event_core_api
     image: atwa4/event-core-api:latest
+    container_name: event_core_api
     restart: always
     ports:
-      - '8082:8082'
+      - "8082:8082"
     environment:
       - PROFILE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/products
@@ -51,8 +51,8 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     environment:
       - PROFILE=test
     depends_on:
@@ -60,22 +60,23 @@ services:
     networks:
       - webnet
 
-   certbot:
-     image: certbot/certbot
-     container_name: certbot
-     volumes:
-       - ./certbot/www:/var/www/certbot
-       - ./certbot/conf:/etc/letsencrypt
-     entrypoint: ""
-     command: > 
-       certonly --webroot 
-       --webroot-path=/var/www/certbot 
-       --email salahsayedatwa@gmail.com 
-       --agree-tos 
-       --no-eff-email 
-       -d profily.site -d www.profily.site
-     networks:
-       - webnet
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    entrypoint: ""
+    command: > 
+      certonly --webroot 
+      --webroot-path=/var/www/certbot 
+      --email salahsayedatwa@gmail.com 
+      --agree-tos 
+      --no-eff-email 
+      -d profily.site 
+      -d www.profily.site
+    networks:
+      - webnet
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
@@ -113,13 +114,13 @@ services:
       - kafka
     entrypoint: ["/bin/sh", "-c"]
     command: >
-      "sleep 10 &&
-       kafka-topics --create
-         --topic analytics-events
-         --bootstrap-server kafka:9092
-         --partitions 1
-         --replication-factor 1
-         --if-not-exists"
+      sleep 10 &&
+      kafka-topics --create
+        --topic analytics-events
+        --bootstrap-server kafka:9092
+        --partitions 1
+        --replication-factor 1
+        --if-not-exists
     networks:
       - webnet
     restart: "no"
