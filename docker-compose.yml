@@ -1,19 +1,14 @@
 version: "3.8"
 
 services:
-  psql-db:
-    image: postgres
-    container_name: psql-db
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=@_123456789000Sa
-      - POSTGRES_DB=products
+  ollama:
+    image: ollama/ollama:latest
+    command: ["ollama", "serve", "--host", "0.0.0.0"]
     ports:
-      - '5433:5432'
-    networks:
-      - webnet
-
+      - "11434:11434"
+    volumes:
+      - ./models:/root/.ollama/models
+      
   itwaysai:
     container_name: itways-ai-api
     image: atwa4/itways-ai-api:latest
@@ -22,22 +17,12 @@ services:
       - '8082:8082'
     environment:
       - PROFILE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/products
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=@_123456789000Sa
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - WORK_DIR=home/kayany_website/itways
-      - DOMAIN=http://35.197.20.122:8082
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USERNAME=salahsayedatwa@gmail.com
-      - SMTP_PASSWORD=ovviocmfvepvoesq
+      - AI_ENDPOINT=http://ollama:11434
+      - AI_MODEL=codellama:7b
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - psql-db
-      - kafka
+      - ollama
     volumes:
       - /home/kayany_website/itways:/home/kayany_website/itways
     networks:
