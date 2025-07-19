@@ -8,6 +8,8 @@ services:
     volumes:
       - ./models:/root/.ollama/models
     command: ["serve"]
+    networks:
+      - webnet
       
   itwaysai:
     container_name: itways-ai-api
@@ -18,6 +20,7 @@ services:
     environment:
       - PROFILE=prod
       - AI_ENDPOINT=http://ollama:11434
+      - AI_URL=ollama
       - AI_MODEL=codellama:7b
     extra_hosts:
       - "host.docker.internal:host-gateway"
