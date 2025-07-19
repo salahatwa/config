@@ -14,9 +14,9 @@ services:
     networks:
       - webnet
 
-  eventcore:
-    container_name: event_core_api
-    image: atwa4/event-core-api:latest
+  itwaysai:
+    container_name: itways-ai-api
+    image: atwa4/itways-ai-api:latest
     restart: always
     ports:
       - '8082:8082'
@@ -48,75 +48,14 @@ services:
     container_name: nginx
     volumes: 
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
     ports:
       - '80:80'
-      - '443:443'
     environment:
       - PROFILE=test
     depends_on:
-      - eventcore
+      - itwaysai
     networks:
       - webnet
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-    entrypoint: ""
-    command: certbot certonly --webroot --webroot-path=/var/www/certbot --email salahsayedatwa@gmail.com --agree-tos --no-eff-email -d profily.site -d www.profily.site
-    networks:
-      - webnet
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.0
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    networks:
-      - webnet
-
-  kafka:
-    image: confluentinc/cp-kafka:7.3.0
-    container_name: kafka
-    ports:
-      - "9092:9092"
-      - "29092:29092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - webnet
-
-  create-topic:
-    image: confluentinc/cp-kafka:7.3.0
-    container_name: kafka-create-topic
-    depends_on:
-      - kafka
-    entrypoint: ["/bin/sh", "-c"]
-    command: >
-      "sleep 10 &&
-       kafka-topics --create
-         --topic analytics-events
-         --bootstrap-server kafka:9092
-         --partitions 1
-         --replication-factor 1
-         --if-not-exists"
-    networks:
-      - webnet
-    restart: "no"
 
 networks:
   webnet:
