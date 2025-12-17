@@ -34,7 +34,7 @@ log "Downloading docker-compose.prod.yml"
 curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/docker-compose.prod.yml
 
 log "Downloading .env.production"
-curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/main/.env.production
+curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/.env.production
 
 # ---------- Stop running containers ----------
 log "Stopping existing containers"
