@@ -1,21 +1,62 @@
-echo "Deployment has been started";
+#!/bin/bash
+set -Eeuo pipefail
 
-sudo chmod 777 /var/run/docker.sock;
+echo "🚀 Deployment started..."
 
-sudo docker network create webnet;
+# ---------- Helpers ----------
+log() {
+  echo "👉 $1"
+}
 
-sudo rm -rf docker-compose.prod.yml;
+# ---------- Docker socket permissions ----------
+if [ -S /var/run/docker.sock ]; then
+  sudo chmod 666 /var/run/docker.sock || true
+else
+  log "Docker socket not found, skipping chmod"
+fi
 
-curl -O https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/docker-compose.prod.yml;
+# ---------- Docker network ----------
+if ! sudo docker network inspect webnet >/dev/null 2>&1; then
+  log "Creating docker network: webnet"
+  sudo docker network create webnet
+else
+  log "Docker network 'webnet' already exists"
+fi
 
-curl -O https://raw.githubusercontent.com/salahatwa/config/main/.env.production;
+# ---------- Clean old compose file ----------
+if [ -f docker-compose.prod.yml ]; then
+  log "Removing old docker-compose.prod.yml"
+  rm -f docker-compose.prod.yml
+fi
 
-sudo docker compose down;
+# ---------- Download required files ----------
+log "Downloading docker-compose.prod.yml"
+curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/docker-compose.prod.yml
 
-sudo docker rmi salahatwa2035/dynamic-platform-api:latest;
+log "Downloading .env.production"
+curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/main/.env.production
 
-sudo docker compose pull && sudo docker compose build ;
+# ---------- Stop running containers ----------
+log "Stopping existing containers"
+sudo docker compose -f docker-compose.prod.yml --env-file .env.production down || true
 
-sudo docker compose -f docker-compose.prod.yml --env-file .env.production up ;
+# ---------- Remove old image if exists ----------
+if sudo docker images | grep -q "salahatwa2035/dynamic-platform-api"; then
+  log "Removing old image"
+  sudo docker rmi salahatwa2035/dynamic-platform-api:latest || true
+else
+  log "Docker image not found, skipping remove"
+fi
 
-echo "Deployment has been done success :)";
+# ---------- Pull & build ----------
+log "Pulling images"
+sudo docker compose -f docker-compose.prod.yml --env-file .env.production pull
+
+log "Building images"
+sudo docker compose -f docker-compose.prod.yml --env-file .env.production build
+
+# ---------- Start services ----------
+log "Starting containers"
+sudo docker compose -f docker-compose.prod.yml --env-file .env.production up -d
+
+echo "✅ Deployment completed successfully!"
