@@ -16,6 +16,6 @@ sudo docker rmi salahatwa2035/dynamic-platform-api:latest;
 
 sudo docker compose pull && sudo docker compose build ;
 
-sudo docker compose -f docker-compose.prod.yml --env-file .env.production up -d ;
+sudo docker compose -f docker-compose.prod.yml --env-file .env.production up ;
 
 echo "Deployment has been done success :)";
