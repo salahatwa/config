@@ -64,39 +64,6 @@ services:
     # Shared memory for Chrome
     shm_size: 1gb
 
-  # IronPDF Service (External Engine) - REQUIRES PAID LICENSE
-  # Note: IronPDF external service requires paid license and Docker Hub access
-  # Uncomment and configure if you have IronPDF license
-  # ironpdf:
-  #   image: ironsoftwareofficial/ironpdf-engine:latest
-  #   container_name: dynamic-platform-ironpdf
-  #   restart: unless-stopped
-  #   environment:
-  #     IRONPDF_ENGINE_PORT: 33350
-  #     IRONPDF_ENGINE_LOG_LEVEL: INFO
-  #     IRONPDF_ENGINE_TIMEOUT: 60000
-  #     IRONPDF_ENGINE_ENABLE_LOGGING: true
-  #     IRONPDF_ENGINE_MAX_WORKERS: ${IRONPDF_MAX_WORKERS:-4}
-  #     IRONPDF_CHROME_FLAGS: "--no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=0"
-  #   networks:
-  #     - platform-network
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:33350/health"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 30s
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 2G
-  #         cpus: '2.0'
-  #       reservations:
-  #         memory: 1G
-  #         cpus: '1.0'
-    # Shared memory for Chrome
-    # shm_size: 2gb
-
   # Playwright Service (External Engine)
   playwright:
     image: mcr.microsoft.com/playwright:v1.40.0-jammy
