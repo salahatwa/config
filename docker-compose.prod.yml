@@ -22,24 +22,32 @@ services:
       retries: 5
       start_period: 10s
 
-  # IronPDF Service (External Engine)
-  ironpdf:
-    image: ironsoftwareofficial/ironpdf-engine:latest
-    container_name: dynamic-platform-ironpdf
+  # Gotenberg Service (Free PDF Generation)
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: dynamic-platform-gotenberg
     restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--chromium-disable-web-security"
+      - "--chromium-allow-list=file:///*"
+      - "--chromium-deny-list=^file:///[^tmp].*"
+      - "--chromium-ignore-certificate-errors"
+      - "--chromium-disable-routes"
+      - "--api-timeout=60s"
+      - "--api-root-path=/gotenberg"
     environment:
-      # IronPDF Engine Configuration
-      IRONPDF_ENGINE_PORT: 33350
-      IRONPDF_ENGINE_LOG_LEVEL: INFO
-      IRONPDF_ENGINE_TIMEOUT: 60000
-      IRONPDF_ENGINE_ENABLE_LOGGING: true
-      IRONPDF_ENGINE_MAX_WORKERS: ${IRONPDF_MAX_WORKERS:-4}
-      # Chrome options for better PDF rendering
-      IRONPDF_CHROME_FLAGS: "--no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=0"
+      # Gotenberg Configuration
+      GOTENBERG_API_TIMEOUT: 60s
+      GOTENBERG_LOG_LEVEL: INFO
+      # Chrome flags for container environment
+      GOTENBERG_CHROMIUM_DISABLE_WEB_SECURITY: true
+      GOTENBERG_CHROMIUM_ALLOW_LIST: "file:///*"
+      GOTENBERG_CHROMIUM_IGNORE_CERTIFICATE_ERRORS: true
     networks:
       - platform-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:33350/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -48,13 +56,46 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2G
-          cpus: '2.0'
-        reservations:
           memory: 1G
           cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
     # Shared memory for Chrome
-    shm_size: 2gb
+    shm_size: 1gb
+
+  # IronPDF Service (External Engine) - REQUIRES PAID LICENSE
+  # Note: IronPDF external service requires paid license and Docker Hub access
+  # Uncomment and configure if you have IronPDF license
+  # ironpdf:
+  #   image: ironsoftwareofficial/ironpdf-engine:latest
+  #   container_name: dynamic-platform-ironpdf
+  #   restart: unless-stopped
+  #   environment:
+  #     IRONPDF_ENGINE_PORT: 33350
+  #     IRONPDF_ENGINE_LOG_LEVEL: INFO
+  #     IRONPDF_ENGINE_TIMEOUT: 60000
+  #     IRONPDF_ENGINE_ENABLE_LOGGING: true
+  #     IRONPDF_ENGINE_MAX_WORKERS: ${IRONPDF_MAX_WORKERS:-4}
+  #     IRONPDF_CHROME_FLAGS: "--no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=0"
+  #   networks:
+  #     - platform-network
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:33350/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 2G
+  #         cpus: '2.0'
+  #       reservations:
+  #         memory: 1G
+  #         cpus: '1.0'
+    # Shared memory for Chrome
+    # shm_size: 2gb
 
   # Playwright Service (External Engine)
   playwright:
@@ -98,6 +139,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      gotenberg:
+        condition: service_healthy
       ironpdf:
         condition: service_healthy
       playwright:
@@ -139,14 +182,19 @@ services:
       IRONPDF_ENGINE_TIMEOUT: ${IRONPDF_ENGINE_TIMEOUT:-60000}
       IRONPDF_LICENSE_KEY: ${IRONPDF_LICENSE_KEY:-}
       
+      # Gotenberg Configuration - Free PDF Service (NO licensing required)
+      GOTENBERG_ENABLED: ${GOTENBERG_ENABLED:-true}
+      GOTENBERG_SERVICE_URL: ${GOTENBERG_SERVICE_URL:-http://gotenberg:3000}
+      GOTENBERG_SERVICE_TIMEOUT: ${GOTENBERG_SERVICE_TIMEOUT:-60000}
+      
       # Playwright Configuration - External Service (NO local dependencies downloaded)
       PLAYWRIGHT_ENABLED: ${PLAYWRIGHT_ENABLED:-true}
       PLAYWRIGHT_USE_EXTERNAL_SERVICE: ${PLAYWRIGHT_USE_EXTERNAL_SERVICE:-true}
       PLAYWRIGHT_SERVICE_URL: ${PLAYWRIGHT_SERVICE_URL:-http://playwright:3000}
       PLAYWRIGHT_SERVICE_TIMEOUT: ${PLAYWRIGHT_SERVICE_TIMEOUT:-60000}
       
-      # PDF Engine Selection
-      PDF_ENGINE: ${PDF_ENGINE:-auto}
+      # PDF Engine Selection - Gotenberg preferred (free, high quality)
+      PDF_ENGINE: ${PDF_ENGINE:-gotenberg}
       
       # Java Options for Production
       JAVA_OPTS: >-
