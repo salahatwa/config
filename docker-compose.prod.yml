@@ -54,18 +54,15 @@ services:
 
   # Playwright Service (External Engine)
   playwright:
-    image: mcr.microsoft.com/playwright:v1.40.0-jammy
+    build:
+      context: ./playwright-service
+      dockerfile: Dockerfile-play-wright
     container_name: dynamic-platform-playwright
     restart: unless-stopped
-    command: >
-      sh -c "
-        npm install -g playwright-server &&
-        playwright-server --port 3000 --host 0.0.0.0
-      "
     environment:
       # Playwright Configuration
-      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 0
+      NODE_ENV: production
+      PORT: 3000
     networks:
       - platform-network
     healthcheck:
