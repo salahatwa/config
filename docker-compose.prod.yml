@@ -141,8 +141,6 @@ services:
         condition: service_healthy
       gotenberg:
         condition: service_healthy
-      ironpdf:
-        condition: service_healthy
       playwright:
         condition: service_healthy
     environment:
@@ -175,10 +173,10 @@ services:
       SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: ${MAX_FILE_SIZE:-50MB}
       SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: ${MAX_REQUEST_SIZE:-50MB}
       
-      # IronPDF Configuration - External Service (NO local dependencies downloaded)
-      IRONPDF_ENABLED: ${IRONPDF_ENABLED:-true}
-      IRONPDF_USE_EXTERNAL_ENGINE: ${IRONPDF_USE_EXTERNAL_ENGINE:-true}
-      IRONPDF_ENGINE_URL: ${IRONPDF_ENGINE_URL:-http://ironpdf:33350}
+      # IronPDF Configuration - DISABLED (requires license and service)
+      IRONPDF_ENABLED: ${IRONPDF_ENABLED:-false}
+      IRONPDF_USE_EXTERNAL_ENGINE: ${IRONPDF_USE_EXTERNAL_ENGINE:-false}
+      IRONPDF_ENGINE_URL: ${IRONPDF_ENGINE_URL:-}
       IRONPDF_ENGINE_TIMEOUT: ${IRONPDF_ENGINE_TIMEOUT:-60000}
       IRONPDF_LICENSE_KEY: ${IRONPDF_LICENSE_KEY:-}
       
