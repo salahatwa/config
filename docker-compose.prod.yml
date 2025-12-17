@@ -22,6 +22,37 @@ services:
       retries: 5
       start_period: 10s
 
+  # IronPDF Service (Production Only)
+  ironpdf:
+    image: ironsoftwareofficial/ironpdf-engine:latest
+    container_name: dynamic-platform-ironpdf
+    restart: unless-stopped
+    environment:
+      # IronPDF Engine Configuration
+      IRONPDF_ENGINE_PORT: 33350
+      IRONPDF_ENGINE_LOG_LEVEL: INFO
+      IRONPDF_ENGINE_TIMEOUT: 60000
+      # Security settings
+      IRONPDF_ENGINE_ENABLE_LOGGING: true
+      IRONPDF_ENGINE_MAX_WORKERS: ${IRONPDF_MAX_WORKERS:-4}
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:33350/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Resource limits for PDF generation
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
   # Backend API Service
   backend:
     image: salahatwa2035/dynamic-platform-api:latest
@@ -29,6 +60,8 @@ services:
     restart: unless-stopped
     depends_on:
       postgres:
+        condition: service_healthy
+      ironpdf:
         condition: service_healthy
     environment:
       # Spring Profile
@@ -60,10 +93,11 @@ services:
       SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: ${MAX_FILE_SIZE:-50MB}
       SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: ${MAX_REQUEST_SIZE:-50MB}
       
-      # IronPDF Configuration for Linux
-      IRONPDF_ENGINE_LINUX: true
-      IRONPDF_ENABLE_LINUX: true
-      IRONPDF_LINUX_AND_DOCKER_DEPENDENCIES_AUTO_CONFIG: true
+      # IronPDF Configuration - Use External Service
+      IRONPDF_ENGINE_URL: http://ironpdf:33350
+      IRONPDF_ENGINE_ENABLED: true
+      IRONPDF_ENGINE_TIMEOUT: ${IRONPDF_TIMEOUT:-60000}
+      IRONPDF_USE_EXTERNAL_ENGINE: true
       
       # Java Options for Production
       JAVA_OPTS: >-
@@ -117,7 +151,7 @@ services:
       # For production, use a reverse proxy like Nginx or Traefik
       - "${BACKEND_PORT:-8080}:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
       interval: 30s
       timeout: 10s
       retries: 3
