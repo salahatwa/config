@@ -56,7 +56,7 @@ services:
   playwright:
     build:
       context: ./playwright-service
-      dockerfile: Dockerfile-play-wright
+      dockerfile: Dockerfile-Playwright
     container_name: dynamic-platform-playwright
     restart: unless-stopped
     environment:
