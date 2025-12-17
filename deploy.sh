@@ -27,6 +27,7 @@ fi
 if [ -f docker-compose.prod.yml ]; then
   log "Removing old docker-compose.prod.yml"
   rm -f docker-compose.prod.yml
+  rm -f .env.production
 fi
 
 
