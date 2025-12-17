@@ -106,10 +106,6 @@ services:
       
       # Playwright Configuration - External Service (NO local dependencies downloaded)
       PLAYWRIGHT_ENABLED: ${PLAYWRIGHT_ENABLED:-false}
-      PLAYWRIGHT_USE_EXTERNAL_SERVICE: ${PLAYWRIGHT_USE_EXTERNAL_SERVICE:-true}
-      PLAYWRIGHT_SERVICE_URL: ${PLAYWRIGHT_SERVICE_URL:-http://playwright:3000}
-      PLAYWRIGHT_SERVICE_TIMEOUT: ${PLAYWRIGHT_SERVICE_TIMEOUT:-60000}
-      
       # PDF Engine Selection - Gotenberg preferred (free, high quality)
       PDF_ENGINE: ${PDF_ENGINE:-gotenberg}
       
@@ -188,3 +184,4 @@ volumes:
   app_logs:
     driver: local
     name: dynamic-platform-logs
+
