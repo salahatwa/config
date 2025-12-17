@@ -52,37 +52,6 @@ services:
     # Shared memory for Chrome
     shm_size: 1gb
 
-  # Playwright Service (External Engine)
-  playwright:
-    build:
-      context: ./playwright-service
-      dockerfile: Dockerfile-Playwright
-    container_name: dynamic-platform-playwright
-    restart: unless-stopped
-    environment:
-      # Playwright Configuration
-      NODE_ENV: production
-      PORT: 3000
-    networks:
-      - platform-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 45s
-    # Resource limits for PDF generation
-    deploy:
-      resources:
-        limits:
-          memory: 1G
-          cpus: '1.0'
-        reservations:
-          memory: 512M
-          cpus: '0.5'
-    # Shared memory for Chrome
-    shm_size: 1gb
-
   # Backend API Service
   backend:
     image: salahatwa2035/dynamic-platform-api:latest
@@ -92,8 +61,6 @@ services:
       postgres:
         condition: service_healthy
       gotenberg:
-        condition: service_healthy
-      playwright:
         condition: service_healthy
     environment:
       # Spring Profile
@@ -138,7 +105,7 @@ services:
       GOTENBERG_SERVICE_TIMEOUT: ${GOTENBERG_SERVICE_TIMEOUT:-60000}
       
       # Playwright Configuration - External Service (NO local dependencies downloaded)
-      PLAYWRIGHT_ENABLED: ${PLAYWRIGHT_ENABLED:-true}
+      PLAYWRIGHT_ENABLED: ${PLAYWRIGHT_ENABLED:-false}
       PLAYWRIGHT_USE_EXTERNAL_SERVICE: ${PLAYWRIGHT_USE_EXTERNAL_SERVICE:-true}
       PLAYWRIGHT_SERVICE_URL: ${PLAYWRIGHT_SERVICE_URL:-http://playwright:3000}
       PLAYWRIGHT_SERVICE_TIMEOUT: ${PLAYWRIGHT_SERVICE_TIMEOUT:-60000}
