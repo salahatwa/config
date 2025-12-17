@@ -29,12 +29,21 @@ if [ -f docker-compose.prod.yml ]; then
   rm -f docker-compose.prod.yml
 fi
 
+# ---------- Clean old compose Dockerfile-Playwright ----------
+if [ -f docker-compose.prod.yml ]; then
+  log "Removing old Dockerfile-Playwright"
+  rm -f Dockerfile-Playwright
+fi
+
 # ---------- Download required files ----------
 log "Downloading docker-compose.prod.yml"
 curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/docker-compose.prod.yml
 
 log "Downloading .env.production"
 curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/.env.production
+
+log "Downloading Dockerfile-Playwright"
+curl -fsSLO https://raw.githubusercontent.com/salahatwa/config/dynamic-platform/Dockerfile-Playwright
 
 # ---------- Stop running containers ----------
 log "Stopping existing containers"
